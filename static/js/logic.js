@@ -1,3 +1,4 @@
+//set up colors association to range object
 let colors = {
     "lte10": {
         "color": "#4d9221",
@@ -25,6 +26,7 @@ let colors = {
     }
 }
 
+//fucntion pulled from choropleth example https://leafletjs.com/examples/choropleth/
 function getColor(depth) {
     return depth <= 10 ? colors.lte10.color :
         depth <= 30 ? colors.lte30.color :
