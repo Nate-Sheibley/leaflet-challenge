@@ -35,12 +35,25 @@ function getColor(depth) {
 }
 
 function updateLegend(colors){
-    let HTMLlist = ["<p>" + "Color | Depth Range"  + "</p>"];
+    //open html table and set spacing
+    let HTMLlist = ["<table cellspacing='0'>"];
     Object.keys(colors).forEach(key => {
-        HTMLlist.push("<p>" + `Color : ${colors[`${key}`].color} ${colors[`${key}`].tag}` + "</p>")
+        //declare color rectangle html to put in the legend 
+        let color_box =  `<svg height=16 width=16> <rect width="16" height="16" fill="${colors[key].color}"/> </svg>`
+        // declare table data, and fill second column with depth range 
+        //push to html list
+        HTMLlist.push("<tr>" + `<td>${color_box}</td>` + `<td style="vertical-align:top">${colors[key].tag}</td>` + "<tr>")
     });
-    
-    d3.select(".legend").innerHTML = HTMLlist.join("");
+    // close table tag in html list
+    HTMLlist.push("</table>");
+
+    // Pulled from citibike assignment
+    legend_div = document.querySelector(".legend")
+    //join htmllist insto a single string and assign it inside legend div
+    legend_div.innerHTML = HTMLlist.join("");
+    //set styling, options pulled from citibike assignment
+    legend_div.style.backgroundColor = 'white';
+    legend_div.style.padding = "10px"
 }
 
 // adapted from citibike in class assignment
@@ -81,6 +94,7 @@ function createMap(quakeMarkerGroup) {
     };
     // Add the info legend to the map.
     legend.addTo(map);
+    updateLegend(colors);
 };
 
 function createMarkers(geoData) {
@@ -115,7 +129,6 @@ function createMarkers(geoData) {
     });
 
     createMap(L.layerGroup(quakeMarkers));
-    updateLegend(colors);
 }
 
 let geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
